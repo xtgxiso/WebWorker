@@ -7,7 +7,6 @@ use Workerman\Lib\Timer;
 use Workerman\Autoloader;
 use Workerman\Connection\AsyncTcpConnection;
 use Workerman\Protocols\Http;
-use WebWorker\libs\db;
 
 class App extends Worker
 {
@@ -56,6 +55,10 @@ class App extends Worker
     }
 
     public function onClientMessage($connection,$data){
+        if ( empty($this->map) ){
+            $conn->send('<div style="margin: 200px auto;width:500px;height:800px;text-align:center;">基于<a href="http://www.workerman.net/" target="_blank">Workerman</a>实现的自带http server的web开发框架<br/>没有添加路由，请添加路由!</div>');
+            return;
+        }
         $this->conn = $connection;
         $url= $_SERVER["REQUEST_URI"];
         $pos = stripos($url,"?");
