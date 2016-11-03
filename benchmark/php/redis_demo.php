@@ -5,9 +5,9 @@ use WebWorker\Libs\Mredis;
 
 //判断系统
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    require_once __DIR__.'/../workerman-for-win/Autoloader.php';
+    require_once __DIR__.'/../../workerman-for-win/Autoloader.php';
 }else {
-    require_once __DIR__.'/../workerman/Autoloader.php';
+    require_once __DIR__.'/../../workerman/Autoloader.php';
     // 检查扩展
     if(!extension_loaded('pcntl'))
     {
