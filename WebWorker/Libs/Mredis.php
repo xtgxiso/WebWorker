@@ -22,7 +22,9 @@ class Mredis extends \Redis{
                 self::$_instance->auth($password);
             }
             $db = $config["db"] ? $config["db"] : 0;
-            self::$_instance->select($db);
+            if ( !self::$_instance->select($db) ){
+                echo "redis can't connect\r\n";
+            }
         }
         return self::$_instance;
     }
