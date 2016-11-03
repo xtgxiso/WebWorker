@@ -23,7 +23,7 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 $app = new WebWorker\App("http://0.0.0.0:1215");
 
 //进程数
-$app->count = 4;
+$app->count = 40;
 
 //自动加载目录--会加载目录下的所有php文件
 $app->autoload = array();
