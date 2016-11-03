@@ -32,7 +32,7 @@ $app->autoload = array();
 $config = array();
 $config["host"] = "127.0.0.1";
 $config["port"] = 6379;
-$config["password"] = "test";
+$config["password"] = "123456";
 $config["db"] = 1;
 
 //注册路由
