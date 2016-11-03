@@ -19,15 +19,15 @@ WebWorker
 
 go的压力测试
 --------
-        ![image](https://github.com/xtgxiso/WebWorker/blob/master/benchmark/go/go.ab.png)
+![image](https://github.com/xtgxiso/WebWorker/blob/master/benchmark/go/go.ab.png)
 
 node的压力测试
 --------
-        ![image](https://github.com/xtgxiso/WebWorker/blob/master/benchmark/node/node.ab.png)
+![image](https://github.com/xtgxiso/WebWorker/blob/master/benchmark/node/node.ab.png)
 
 php的压力测试
 --------
-        ![image](https://github.com/xtgxiso/WebWorker/blob/master/benchmark/php/php.ab.png)
+![image](https://github.com/xtgxiso/WebWorker/blob/master/benchmark/php/php.ab.png)
 
 
 快速开始
