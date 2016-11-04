@@ -43,6 +43,20 @@ class App extends Worker
         }
     }
 
+    private function auto_close($conn){
+        if ( strtolower($_SERVER["SERVER_PROTOCOL"]) == "http/1.1" ){
+            if ( strtolower($_SERVER["Connection"]) == "close" ){
+                $conn->close();
+            }
+        }else{
+            if ( $_SERVER["HTTP_CONNECTION"] == "keep-alive" ){
+
+            }else{
+                $conn->close();
+            }
+        }
+    }
+    
     private function exec_url($callback,$connection,$data){
         try {
             call_user_func($callback, $connection, $data);
@@ -79,6 +93,7 @@ EOD;
         }else{
             $this->show_404($connection);
         }
+        $this->auto_close($connection);
     }
 
     public function  server_json($data){
