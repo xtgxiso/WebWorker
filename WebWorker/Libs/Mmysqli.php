@@ -34,7 +34,7 @@ class Mmysqli extends \mysqli{
     }
 
     public function reconnect(){
-        if ( !this->ping() ){
+        if ( !$this->ping() ){
             $this->close();
             return $this->connect_db();
         }
