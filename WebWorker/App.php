@@ -45,8 +45,10 @@ class App extends Worker
 
     private function auto_close($conn){
         if ( strtolower($_SERVER["SERVER_PROTOCOL"]) == "http/1.1" ){
-            if ( strtolower($_SERVER["Connection"]) == "close" ){
-                $conn->close();
+            if ( isset($_SERVER["HTTP_CONNECTION"]) ){
+                if ( strtolower($_SERVER["HTTP_CONNECTION"]) == "close" ){
+                        $conn->close();
+                }
             }
         }else{
             if ( $_SERVER["HTTP_CONNECTION"] == "keep-alive" ){
