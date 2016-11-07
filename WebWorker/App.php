@@ -74,8 +74,7 @@ EOD;
         require_once __DIR__ . '/../Applications/Statistics/Clients/StatisticClient.php';
         $statistic_address = 'udp://127.0.0.1:55656';
         $this->conn = $connection;
-        $
-            = $_SERVER["REQUEST_URI"];
+        $url= $_SERVER["REQUEST_URI"];
         $data = explode("/",$url);
         $class = $data[0];
         $method = isset($data[1]) ? $data[1] : "_default";
