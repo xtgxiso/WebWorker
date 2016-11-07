@@ -60,14 +60,7 @@ class App extends Worker
     }
     
     private function exec_url($callback,$connection,$data){
-        try {
-            call_user_func($callback, $connection, $data);
-        }catch (\Exception $e) {
-            // Jump_exit?
-            if ($e->getMessage() != 'jump_exit') {
-                echo $e;
-            }
-        }
+      
     }
 
     public function onClientMessage($connection,$data){
@@ -82,8 +75,15 @@ EOD;
             $connection->send($str);
             return;
         }
+        require_once __DIR__ . '/../Applications/Statistics/Clients/StatisticClient.php';
+        $statistic_address = 'udp://127.0.0.1:55656';
         $this->conn = $connection;
         $url= $_SERVER["REQUEST_URI"];
+        $data = explode("/",$url);
+        $class = $data[0];
+        $method = isset($data[1]) ? $data[1] : "_default";
+        \StatisticClient::tick($class, $method);
+        $success = false;
         $pos = stripos($url,"?");
         if ($pos != false) {
             $url = substr($url,0,$pos);
@@ -91,9 +91,22 @@ EOD;
         $url = strtolower(trim($url,"/"));
         $callback =  @$this->map[$url];
         if ( isset($callback) ){
-            $this->exec_url($callback,$connection,$data);
+            try {
+                call_user_func($callback, $connection, $data);
+                \StatisticClient::report($class, $method, 1, 0, '', $statistic_address);
+            }catch (\Exception $e) {
+                // Jump_exit?
+                if ($e->getMessage() != 'jump_exit') {
+                    echo $e;
+                }
+                $code = $e->getCode() ? $e->getCode() : 500;
+                StatisticClient::report($class, $method, $success, $code, $e, $statistic_address);
+            }
         }else{
             $this->show_404($connection);
+            $code = 404;
+            $msg = "class $class not found";
+            \StatisticClient::report($class, $method, $success, $code, $msg, $statistic_address);
         }
         $this->auto_close($connection);
     }
