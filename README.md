@@ -42,6 +42,9 @@ demo.php
 <?php
 use Workerman\Worker;
 use Workerman\Protocols\Http;
+use WebWorker\Libs\Mredis;
+use WebWorker\Libs\Mdb;
+use WebWorker\Libs\Mmysqli;
 
 //判断系统
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
