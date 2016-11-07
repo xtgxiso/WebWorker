@@ -58,10 +58,6 @@ class App extends Worker
             }
         }
     }
-    
-    private function exec_url($callback,$connection,$data){
-      
-    }
 
     public function onClientMessage($connection,$data){
         if ( empty($this->map) ){
@@ -78,7 +74,8 @@ EOD;
         require_once __DIR__ . '/../Applications/Statistics/Clients/StatisticClient.php';
         $statistic_address = 'udp://127.0.0.1:55656';
         $this->conn = $connection;
-        $url= $_SERVER["REQUEST_URI"];
+        $
+            = $_SERVER["REQUEST_URI"];
         $data = explode("/",$url);
         $class = $data[0];
         $method = isset($data[1]) ? $data[1] : "_default";
