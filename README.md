@@ -86,6 +86,30 @@ $app->HandleFunc("/input",function($conn,$data) use($app){
      $conn->send($body);
 });
 
+$config = array();
+$config["redis"]["host"] = "127.0.0.1";
+$config["redis"]["port"] = 6379;
+$config["redis"]["password"] = "123456";
+$config["redis"]["db"] = 1;
+$config["db"]["host"] = "127.0.0.1";
+$config["db"]["user"] = "root";
+$config["db"]["password"] = "123456";
+$config["db"]["db"] = "test";
+$config["db"]["port"] = 3306;
+$config["db"]["charset"] = "utf8";
+
+//redis示例
+$app->HandleFunc("/redis",function($conn,$data) use($app,$config){
+     $redis = Mredis::getInstance($config["redis"]);
+     $conn->send($redis->get("xtgxiso"));
+});
+
+//mysql示例
+$app->HandleFunc("/mysql",function($conn,$data) use($app,$config){
+     $db = Mdb::getInstance($config["db"]);
+     $list = $db->query("select * from test")->fetch_all(MYSQLI_ASSOC);
+     $app->server_json($list);
+});
 
 //自定义404
 $app->on404  = function($conn){
