@@ -75,16 +75,16 @@ EOD;
         $statistic_address = 'udp://127.0.0.1:55656';
         $this->conn = $connection;
         $url= $_SERVER["REQUEST_URI"];
-        $url_arr = explode("/",$url);
-        $class = $url_arr[0];
-        $method = isset($url_arr[1]) ? $url_arr[1] : "_default";
-        \StatisticClient::tick($class, $method);
-        $success = false;
         $pos = stripos($url,"?");
         if ($pos != false) {
             $url = substr($url,0,$pos);
         }
         $url = strtolower(trim($url,"/"));
+        $url_arr = explode("/",$url);
+        $class = $url_arr[0];
+        $method = isset($url_arr[1]) ? $url_arr[1] : "_default";
+        \StatisticClient::tick($class, $method);
+        $success = false;
         $callback =  @$this->map[$url];
         if ( isset($callback) ){
             try {
