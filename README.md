@@ -13,6 +13,7 @@ WebWorker
 * 自定义404响应
 * 只支持php7
 * 支持http协议1.1和1.0的长连接和短连接
+* 集成了workerman-statistics项目，可以监控服务情况
 
 框架由来
 ========
