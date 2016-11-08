@@ -117,8 +117,8 @@ $app->HandleFunc("/mysql",function() use($app,$config){
 });
 
 //自定义404
-$app->on404  = function($conn){
-    $conn->send("我的404");
+$app->on404  = function() use($app){
+    $app->server_send("我的404");
 };
 
 // 如果不是在根目录启动，则运行runAll方法
