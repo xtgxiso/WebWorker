@@ -14,6 +14,7 @@ WebWorker
 * 只支持php7
 * 支持http协议1.1和1.0的长连接和短连接
 * 集成了workerman-statistics项目，可以监控服务情况
+* 支持中间件
 
 框架由来
 ========
@@ -73,21 +74,21 @@ $app->count = 4;
 $app->autoload = array();
 
 //注册路由hello
-$app->HandleFunc("/hello",function($conn,$data) use($app){
-    $conn->send("Hello World WorkerMan WebWorker!");
+$app->HandleFunc("/hello",function() use($app){
+    $app->server_send("Hello World WorkerMan WebWorker!");
 });
 
 //注册路由json
-$app->HandleFunc("/json",function($conn,$data) use($app){
+$app->HandleFunc("/json",function() use($app){
      //以json格式响应
      $app->server_json(array("name"=>"WebWorker"));
 });
 
 //注册路由input
-$app->HandleFunc("/input",function($conn,$data) use($app){
+$app->HandleFunc("/input",function() use($app){
     //获取body
      $body = $GLOBALS['HTTP_RAW_POST_DATA'];
-     $conn->send($body);
+     $app->server_send($body);
 });
 
 $config = array();
@@ -103,13 +104,13 @@ $config["db"]["port"] = 3306;
 $config["db"]["charset"] = "utf8";
 
 //redis示例
-$app->HandleFunc("/redis",function($conn,$data) use($app,$config){
+$app->HandleFunc("/redis",function() use($app,$config){
      $redis = Mredis::getInstance($config["redis"]);
-     $conn->send($redis->get("xtgxiso"));
+     $app->server_send($redis->get("xtgxiso"));
 });
 
 //mysql示例
-$app->HandleFunc("/mysql",function($conn,$data) use($app,$config){
+$app->HandleFunc("/mysql",function() use($app,$config){
      $db = Mdb::getInstance($config["db"]);
      $list = $db->query("select * from test")->fetch_all(MYSQLI_ASSOC);
      $app->server_json($list);
