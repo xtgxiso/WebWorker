@@ -24,9 +24,14 @@ class App extends Worker
 
     public function HandleFunc($url,callable $callback){
         $url = strtolower(trim($url,"/"));
-        $this->map[$url] = $callback;
+        $this->map[$url][] = $callback;
     }
 
+    public function AddFunc($url,callable $callback){
+        $url = strtolower(trim($url,"/"));
+        $this->map[$url][] = $callback;
+    }
+    
     private function show_404($connection){
         if ( $this->on404 ){
             call_user_func($this->on404, $connection);
@@ -88,7 +93,12 @@ EOD;
         $callback =  @$this->map[$url];
         if ( isset($callback) ){
             try {
-                call_user_func($callback, $connection, $data);
+                foreach($callback as $cl){
+                    if ( call_user_func($cl) === true){
+                        echo "break\n";
+                        break;
+                    }
+                }
                 \StatisticClient::report($class, $method, 1, 0, '', $statistic_address);
             }catch (\Exception $e) {
                 // Jump_exit?
@@ -112,6 +122,10 @@ EOD;
         $this->conn->send(json_encode($data));
     }
 
+    public function  server_send($data){
+        $this->conn->send($data);
+    }
+    
     public function run()
     {
         autoload_dir($this->autoload);
