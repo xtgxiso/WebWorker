@@ -36,9 +36,9 @@ $config["password"] = "123456";
 $config["db"] = 1;
 
 //注册路由
-$app->HandleFunc("/",function($conn,$data) use($app,$config){
+$app->HandleFunc("/",function() use($app,$config){
     $redis = Mredis::getInstance($config);
-    $conn->send($redis->get("xtgxiso"));
+    $app->server_send($redis->get("xtgxiso"));
 });
 
 
