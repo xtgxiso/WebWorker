@@ -113,7 +113,6 @@ EOD;
             try {
                 foreach($callback as $cl){
                     if ( call_user_func($cl) === true){
-                        echo "break\n";
                         break;
                     }
                 }
