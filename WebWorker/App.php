@@ -23,13 +23,17 @@ class App extends Worker
     }
 
     public function HandleFunc($url,callable $callback){
-        $url = strtolower(trim($url,"/"));
-        $this->map[$url][] = $callback;
+        if ( $url != "/" ){
+            $url = strtolower(trim($url,"/"));
+	}
+        $this->map[] = array($url,$callback,1);
     }
 
     public function AddFunc($url,callable $callback){
-        $url = strtolower(trim($url,"/"));
-        $this->map[$url][] = $callback;
+        if ( $url != "/" ){
+            $url = strtolower(trim($url,"/"));
+        }
+        $this->map[] = array($url,$callback,2);
     }
     
     private function show_404($connection){
@@ -84,13 +88,27 @@ EOD;
         if ($pos != false) {
             $url = substr($url,0,$pos);
         }
-        $url = strtolower(trim($url,"/"));
+	if ( $url != "/"){
+            $url = strtolower(trim($url,"/"));
+	}
         $url_arr = explode("/",$url);
-        $class = $url_arr[0];
-        $method = isset($url_arr[1]) ? $url_arr[1] : "_default";
+        $class = empty($url_arr[0]) ? "_default" : $url_arr[0];
+        $method = empty($url_arr[1]) ? "_default" : $url_arr[1];
         \StatisticClient::tick($class, $method);
         $success = false;
-        $callback =  @$this->map[$url];
+	foreach($this->map as $route){
+	    if ( $route[2] == 1){//正常路由
+		if ( $route[0] == $url ){
+		    $callback[] = $route[1];
+		}
+	    }else if ( $route[2] == 2 ){//中间件
+		if ( $route[0] == "/" ){
+		    $callback[] = $route[1];
+		}else if ( stripos($url,$route[0]) === 0 ){
+		    $callback[] = $route[1];
+		}
+            }
+	}
         if ( isset($callback) ){
             try {
                 foreach($callback as $cl){
