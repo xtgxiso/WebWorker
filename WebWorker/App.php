@@ -10,6 +10,14 @@ use Workerman\Protocols\Http;
 
 class App extends Worker
 {
+
+    /**
+     * 版本
+     *
+     * @var string
+     */
+    const VERSION = '0.1.0';
+
     private $conn = false;
     private $map = array();
 
