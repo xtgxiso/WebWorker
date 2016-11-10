@@ -146,6 +146,7 @@ EOD;
     public function run()
     {
         autoload_dir($this->autoload);
+	$this->reusePort = true;
         $this->onMessage = array($this, 'onClientMessage');
         parent::run();
     }
