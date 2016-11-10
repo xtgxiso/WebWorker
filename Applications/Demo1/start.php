@@ -33,6 +33,8 @@ if ( WORKERMAN_RUN == "production" ) {
 
 $app = new WebWorker\App("http://0.0.0.0:1215");
 
+$app->name = "xtgxiso";
+
 $app->count = 4;
 
 $app->autoload = array(__DIR__."/controllers/",__DIR__."/libs/",__DIR__."/funcs/",__DIR__."/models/");
