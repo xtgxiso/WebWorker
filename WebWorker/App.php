@@ -16,6 +16,7 @@ class App extends Worker
     public  $autoload = array();
     public  $on404 ="";
 
+    public $onAppStart = NULL;
 
     public function __construct($socket_name, $context_option = array())
     {
@@ -147,6 +148,7 @@ EOD;
     {
         autoload_dir($this->autoload);
 	$this->reusePort = true;
+	$this->onWorkerStart = $this->onAppStart;
         $this->onMessage = array($this, 'onClientMessage');
         parent::run();
     }
