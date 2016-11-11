@@ -1,5 +1,5 @@
 {
-    "name"  : "xtgxiso/WebWorker",
+    "name"  : "xtgxiso/webworker",
     "type"  : "library",
     "keywords": ["http", "asynchronous"],
     "homepage": "https://github.com/xtgxiso/WebWorker",
