@@ -1,0 +1,32 @@
+{
+    "name"  : "xtgxiso/WebWorker",
+    "type"  : "library",
+    "keywords": ["http", "asynchronous"],
+    "homepage": "https://github.com/xtgxiso/WebWorker",
+    "license" : "MIT",
+    "description": "An http server PHP framework for easily building fast, scalable network applications.",
+    "authors" : [
+        {
+            "name"      : "xtgxiso",
+            "email"     : "124960772@qq.com",
+            "homepage"  : "http://www.xtgxiso.com",
+            "role": "Developer"
+        }
+    ],
+    "support" : {
+        "email" : "124960772@qq.com",
+        "issues": "https://github.com/xtgxiso/WebWorker/issues",
+        "wiki"  : "http://doc.webworker.xtgxiso.com/",
+        "source": "https://github.com/xtgxiso/WebWorker"
+    },
+    "require": {
+        "php": ">=7.0"
+    },
+    "suggest": {
+	"ext-event": "For better performance."
+    },
+    "autoload": {
+        "psr-4": {"Workerman\\": "./"}
+    },
+    "minimum-stability":"dev"
+}
