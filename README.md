@@ -1,17 +1,16 @@
 WebWorker
 ========
 
-基于Workerman (http://www.workerman.net/) 实现的自带http server的web开发框架，用于开发高性能的api应用，例如app接口服务端等。
-
+基于Workerman (http://www.workerman.net/) 实现的自带http server的web开发框架，用于开发高性能的api应用，例如app接口服务端等。 详细文档见 http://doc.webworker.xtgxiso.com/ 。
 特性
 ========
+* 仅只支持php7
 * 天生继承workerman所拥有的特性
 * 只实现了简单路由功能的小巧框架,便于开发者使用和扩展.demo1中只是目录示例，开发者可自行定义自己的应用目录结构
 * 相比php-fpm或mod_php的方式性能有几十倍左右的提升
 * 自带简单的单例redis操作类和单例mysqli操作类(支持自动重连)
 * 可设置自动加载目录加载目录下的所有php文件(仅一级不支持递归)
 * 自定义404响应
-* 只支持php7
 * 支持http协议1.1和1.0的长连接和短连接
 * 集成了workerman-statistics项目，可以监控服务情况
 * 支持中间件
