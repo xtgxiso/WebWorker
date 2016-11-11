@@ -143,12 +143,12 @@ EOD;
         $this->auto_close($connection);
     }
 
-    public function  server_json($data){
+    public function  ServerJson($data){
         Http::header("Content-type: application/json");
         $this->conn->send(json_encode($data));
     }
 
-    public function  server_send($data){
+    public function  ServerHtml($data){
         $this->conn->send($data);
     }
     

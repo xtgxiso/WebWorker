@@ -76,27 +76,27 @@ $app->autoload = array();
 //应用级中间件--对所有访问启用ip限制访问
 $app->AddFunc("/",function() use($app){
     if ( $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) {
-	$app->server_send("禁止访问");
-	return true;//返回ture,中断执行后面的路由或中间件，直接返回给浏览器
+        $app->ServerHtml("禁止访问");
+        return true;//返回ture,中断执行后面的路由或中间件，直接返回给浏览器
     }   
 });
 
 //注册路由hello
 $app->HandleFunc("/hello",function() use($app){
-    $app->server_send("Hello World WorkerMan WebWorker!");
+    $app->ServerHtml("Hello World WorkerMan WebWorker!");
 });
 
 //注册路由json
 $app->HandleFunc("/json",function() use($app){
      //以json格式响应
-     $app->server_json(array("name"=>"WebWorker"));
+     $app->ServerJson(array("name"=>"WebWorker"));
 });
 
 //注册路由input
 $app->HandleFunc("/input",function() use($app){
     //获取body
      $body = $GLOBALS['HTTP_RAW_POST_DATA'];
-     $app->server_send($body);
+     $app->ServerHtml($body);
 });
 
 $config = array();
@@ -114,19 +114,19 @@ $config["db"]["charset"] = "utf8";
 //redis示例
 $app->HandleFunc("/redis",function() use($app,$config){
      $redis = Mredis::getInstance($config["redis"]);
-     $app->server_send($redis->get("xtgxiso"));
+     $app->ServerHtml($redis->get("xtgxiso"));
 });
 
 //mysql示例
 $app->HandleFunc("/mysql",function() use($app,$config){
      $db = Mdb::getInstance($config["db"]);
      $list = $db->query("select * from test")->fetch_all(MYSQLI_ASSOC);
-     $app->server_json($list);
+     $app->ServerJson($list);
 });
 
 //自定义404
 $app->on404  = function() use($app){
-    $app->server_send("我的404");
+    $app->ServerHtml("我的404");
 };
 
 // 如果不是在根目录启动，则运行runAll方法

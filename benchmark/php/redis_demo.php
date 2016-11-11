@@ -38,7 +38,7 @@ $config["db"] = 1;
 //注册路由
 $app->HandleFunc("/",function() use($app,$config){
     $redis = Mredis::getInstance($config);
-    $app->server_send($redis->get("xtgxiso"));
+    $app->ServerHtml($redis->get("xtgxiso"));
 });
 
 
