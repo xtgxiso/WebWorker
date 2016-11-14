@@ -27,7 +27,7 @@ class App extends Worker
 
     public $onAppStart = NULL;
 
-    public $statistic = false;
+    public $statistic_server = false;
 
     public function __construct($socket_name, $context_option = array())
     {
@@ -92,9 +92,9 @@ EOD;
             $connection->send($str);
             return;
         }
-	if ( $this->statistic ){
+	if ( $this->statistic_server ){
             require_once __DIR__ . '/Libs/StatisticClient.php';
-            $statistic_address = 'udp://127.0.0.1:55656';
+            $statistic_address = $this->statistic_server;
 	}
         $this->conn = $connection;
         $url= $_SERVER["REQUEST_URI"];
@@ -132,7 +132,7 @@ EOD;
                         break;
                     }
                 }
-                if ( $this->statistic ){
+                if ( $this->statistic_server ){
                     StatisticClient::report($class, $method, 1, 0, '', $statistic_address);
 		}
             }catch (\Exception $e) {
@@ -141,7 +141,7 @@ EOD;
                     echo $e;
                 }
                 $code = $e->getCode() ? $e->getCode() : 500;
-		if ( $this->statistic ){
+		if ( $this->statistic_server ){
                     StatisticClient::report($class, $method, $success, $code, $e, $statistic_address);
 		}
             }
@@ -149,7 +149,7 @@ EOD;
             $this->show_404($connection);
             $code = 404;
             $msg = "class $class not found";
-	    if ( $this->statistic ){
+	    if ( $this->statistic_server ){
                 StatisticClient::report($class, $method, $success, $code, $msg, $statistic_address);
 	    }
         }
