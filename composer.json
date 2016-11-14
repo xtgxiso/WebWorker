@@ -27,7 +27,7 @@
 	"ext-event": "For better performance."
     },
     "autoload": {
-        "psr-4": {"WebWorker\\": "./WebWorker/"}
+        "psr-4": {"WebWorker\\": "./"}
     },
     "minimum-stability":"dev"
 }
