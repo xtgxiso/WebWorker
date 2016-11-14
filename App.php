@@ -7,6 +7,7 @@ use Workerman\Lib\Timer;
 use Workerman\Autoloader;
 use Workerman\Connection\AsyncTcpConnection;
 use Workerman\Protocols\Http;
+use WebWorker\Libs\StatisticClient;
 
 class App extends Worker
 {
@@ -16,7 +17,7 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.5';
 
     private $conn = false;
     private $map = array();
@@ -25,6 +26,8 @@ class App extends Worker
     public  $on404 ="";
 
     public $onAppStart = NULL;
+
+    public $statistic = false;
 
     public function __construct($socket_name, $context_option = array())
     {
@@ -89,8 +92,10 @@ EOD;
             $connection->send($str);
             return;
         }
-        require_once __DIR__ . '/../Applications/Statistics/Clients/StatisticClient.php';
-        $statistic_address = 'udp://127.0.0.1:55656';
+	if ( $this->statistic ){
+            require_once __DIR__ . '/Libs/StatisticClient.php';
+            $statistic_address = 'udp://127.0.0.1:55656';
+	}
         $this->conn = $connection;
         $url= $_SERVER["REQUEST_URI"];
         $pos = stripos($url,"?");
@@ -103,7 +108,9 @@ EOD;
         $url_arr = explode("/",$url);
         $class = empty($url_arr[0]) ? "_default" : $url_arr[0];
         $method = empty($url_arr[1]) ? "_default" : $url_arr[1];
-        \StatisticClient::tick($class, $method);
+        if ( $this->statistic ){
+            StatisticClient::tick($class, $method);
+        }
         $success = false;
 	foreach($this->map as $route){
 	    if ( $route[2] == 1){//正常路由
@@ -125,20 +132,26 @@ EOD;
                         break;
                     }
                 }
-                \StatisticClient::report($class, $method, 1, 0, '', $statistic_address);
+                if ( $this->statistic ){
+                    StatisticClient::report($class, $method, 1, 0, '', $statistic_address);
+		}
             }catch (\Exception $e) {
                 // Jump_exit?
                 if ($e->getMessage() != 'jump_exit') {
                     echo $e;
                 }
                 $code = $e->getCode() ? $e->getCode() : 500;
-                StatisticClient::report($class, $method, $success, $code, $e, $statistic_address);
+		if ( $this->statistic ){
+                    StatisticClient::report($class, $method, $success, $code, $e, $statistic_address);
+		}
             }
         }else{
             $this->show_404($connection);
             $code = 404;
             $msg = "class $class not found";
-            \StatisticClient::report($class, $method, $success, $code, $msg, $statistic_address);
+	    if ( $this->statistic ){
+                StatisticClient::report($class, $method, $success, $code, $msg, $statistic_address);
+	    }
         }
         $this->auto_close($connection);
     }
