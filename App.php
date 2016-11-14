@@ -17,7 +17,7 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.1.6';
+    const VERSION = '0.1.7';
 
     private $conn = false;
     private $map = array();
@@ -108,7 +108,7 @@ EOD;
         $url_arr = explode("/",$url);
         $class = empty($url_arr[0]) ? "_default" : $url_arr[0];
         $method = empty($url_arr[1]) ? "_default" : $url_arr[1];
-        if ( $this->statistic ){
+        if ( $this->statistic_server ){
             StatisticClient::tick($class, $method);
         }
         $success = false;
