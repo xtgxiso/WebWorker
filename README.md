@@ -23,6 +23,10 @@ WebWorker
 ========
 https://github.com/xtgxiso/WebWorker-benchmark
 
+项目示例
+========
+https://github.com/xtgxiso/WebWorker-example
+
 
 安装
 ========
