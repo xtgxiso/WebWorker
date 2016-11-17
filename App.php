@@ -38,12 +38,26 @@ class App extends Worker
         if ( $url != "/" ){
             $url = strtolower(trim($url,"/"));
 	}
+	if ( is_callable($callback) ){
+            if ( $callback instanceof \Closure ){
+                $callback = \Closure::bind($callback, $this, get_class());
+            }
+        }else{
+	    throw new \Exception('can not HandleFunc');
+        }
         $this->map[] = array($url,$callback,1);
     }
 
     public function AddFunc($url,callable $callback){
         if ( $url != "/" ){
             $url = strtolower(trim($url,"/"));
+        }
+	if ( is_callable($callback) ){
+            if ( $callback instanceof \Closure ){
+                $callback = \Closure::bind($callback, $this, get_class());
+            }
+        }else{
+            throw new \Exception('can not HandleFunc');
         }
         $this->map[] = array($url,$callback,2);
     }
