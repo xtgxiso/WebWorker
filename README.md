@@ -57,29 +57,29 @@ $app->count = 4;
 $app->autoload = array();
 
 //应用级中间件--对所有访问启用ip限制访问
-$app->AddFunc("/",function() use($app){
+$app->AddFunc("/",function() {
     if ( $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) {
-        $app->ServerHtml("禁止访问");
+        $this->ServerHtml("禁止访问");
         return true;//返回ture,中断执行后面的路由或中间件，直接返回给浏览器
     }   
 });
 
 //注册路由hello
-$app->HandleFunc("/hello",function() use($app){
-    $app->ServerHtml("Hello World WorkerMan WebWorker!");
+$app->HandleFunc("/hello",function() {
+    $this->ServerHtml("Hello World WorkerMan WebWorker!");
 });
 
 //注册路由json
-$app->HandleFunc("/json",function() use($app){
+$app->HandleFunc("/json",function() {
      //以json格式响应
-     $app->ServerJson(array("name"=>"WebWorker"));
+     $this->ServerJson(array("name"=>"WebWorker"));
 });
 
 //注册路由input
-$app->HandleFunc("/input",function() use($app){
+$app->HandleFunc("/input",function() {
     //获取body
      $body = $GLOBALS['HTTP_RAW_POST_DATA'];
-     $app->ServerHtml($body);
+     $this->ServerHtml($body);
 });
 
 $config = array();
@@ -108,8 +108,8 @@ $app->HandleFunc("/mysql",function() use($app,$config){
 });
 
 //自定义404
-$app->on404  = function() use($app){
-    $app->ServerHtml("我的404");
+$app->on404  = function() {
+    $this->ServerHtml("我的404");
 };
 
 // 如果不是在根目录启动，则运行runAll方法
