@@ -64,7 +64,8 @@ class App extends Worker
     
     private function show_404($connection){
         if ( $this->on404 ){
-            call_user_func($this->on404);
+	    $callback = \Closure::bind($this->on404, $this, get_class());
+            call_user_func($callback);
         }else{
             Http::header("HTTP/1.1 404 Not Found");
             $html = '<html>
