@@ -112,11 +112,6 @@ $app->on404  = function() {
     $this->ServerHtml("我的404");
 };
 
-// 如果不是在根目录启动，则运行runAll方法
-if(!defined('GLOBAL_START'))
-{
-    Worker::runAll();
-}
 
 // Run worker
 Worker::runAll();
