@@ -21,7 +21,7 @@
     },
     "require": {
         "php": ">=7.0",
-	"workerman/workerman" : ">=3.1.8"
+	"workerman/workerman" : "^3.3"
     },
     "suggest": {
 	"ext-event": "For better performance."
