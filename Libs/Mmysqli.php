@@ -45,7 +45,7 @@ class Mmysqli extends \mysqli{
         try {
             return parent::query($query,$resultmode);
         } catch (\mysqli_sql_exception $e) {
-            if ($e->getCode() == 2006 || $e->getCode == 2013) {
+            if ($e->getCode() == 2006 || $e->getCode() == 2013) {
                 $this->close();
                 $this->connect_db();
                 return parent::query($query,$resultmode);
