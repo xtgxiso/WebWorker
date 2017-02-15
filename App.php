@@ -17,7 +17,7 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.2.3';
+    const VERSION = '0.2.4';
 
     private $conn = false;
     private $map = array();
@@ -183,7 +183,11 @@ EOD;
     public function Header($str){
 	Http::header($str);
     }
- 
+
+    public function setcookie($name,$value = '',$maxage = 0,$path = '',$domain = '',$secure = false,$HTTPOnly = false){
+	Http::setcookie($name,$value,$maxage,$path,$domain,$secure,$HTTPOnly);
+    } 
+
     public function run()
     {
         autoload_dir($this->autoload);

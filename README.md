@@ -79,6 +79,8 @@ $app->HandleFunc("/json",function() {
 $app->HandleFunc("/",function() {
      //自定义响应头
      $this->Header("server: xtgxiso");
+     //设置cookie
+     $this->setcookie("xtgxiso",time()); 
      //以json格式响应
      $this->ServerJson(array("name"=>"WebWorker"));
 });
