@@ -75,6 +75,14 @@ $app->HandleFunc("/json",function() {
      $this->ServerJson(array("name"=>"WebWorker"));
 });
 
+//注册路由/
+$app->HandleFunc("/",function() {
+     //自定义响应头
+     $this->Header("server: xtgxiso");
+     //以json格式响应
+     $this->ServerJson(array("name"=>"WebWorker"));
+});
+
 //注册路由input
 $app->HandleFunc("/input",function() {
     //获取body
