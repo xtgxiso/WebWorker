@@ -179,7 +179,11 @@ EOD;
     public function  ServerHtml($data){
         $this->conn->send($data);
     }
-    
+   
+    public function Header($str){
+	Http::header($str);
+    }
+ 
     public function run()
     {
         autoload_dir($this->autoload);
