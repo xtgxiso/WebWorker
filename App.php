@@ -17,7 +17,7 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.2.4';
+    const VERSION = '0.2.5';
 
     private $conn = false;
     private $map = array();
@@ -184,7 +184,7 @@ EOD;
 	Http::header($str);
     }
 
-    public function setcookie($name,$value = '',$maxage = 0,$path = '',$domain = '',$secure = false,$HTTPOnly = false){
+    public function Setcookie($name,$value = '',$maxage = 0,$path = '',$domain = '',$secure = false,$HTTPOnly = false){
 	Http::setcookie($name,$value,$maxage,$path,$domain,$secure,$HTTPOnly);
     } 
 
