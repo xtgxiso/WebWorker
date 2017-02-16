@@ -56,6 +56,11 @@ $app->count = 4;
 //自动加载目录--会加载目录下的所有php文件
 $app->autoload = array();
 
+//启动时执行的代码，这儿包含的文件支持reload
+$app->onAppStart = function($app) use($config){
+    WebWorker\autoload_dir($app->autoload);     
+};
+
 //应用级中间件--对所有访问启用ip限制访问
 $app->AddFunc("/",function() {
     if ( $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) {

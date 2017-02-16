@@ -17,7 +17,7 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.2.5';
+    const VERSION = '0.2.6';
 
     private $conn = false;
     private $map = array();
@@ -190,7 +190,6 @@ EOD;
 
     public function run()
     {
-        autoload_dir($this->autoload);
 	$this->reusePort = true;
 	$this->onWorkerStart = $this->onAppStart;
         $this->onMessage = array($this, 'onClientMessage');
