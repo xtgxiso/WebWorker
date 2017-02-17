@@ -50,6 +50,11 @@ require_once 'vendor/autoload.php';
 
 $app = new WebWorker\App("http://0.0.0.0:1215");
 
+$app->name = "demo";
+
+//设置每个进程处理多少请求后重启(防止程序写的有问题导致内存泄露)，默认为0,不重启
+$app->max_request = 1000;
+
 //进程数
 $app->count = 4;
 

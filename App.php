@@ -17,7 +17,7 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.2.6';
+    const VERSION = '0.2.7';
 
     private $conn = false;
     private $map = array();
@@ -29,6 +29,8 @@ class App extends Worker
 
     public $statistic_server = false;
 
+    public $max_request = 10000;
+ 
     public function __construct($socket_name, $context_option = array())
     {
         parent::__construct($socket_name, $context_option);
@@ -169,6 +171,15 @@ EOD;
 	    }
         }
         $this->auto_close($connection);
+	
+	// 已经处理请求数
+    	static $request_count = 0;
+	// 如果请求数达到1000
+        if( ++$request >= $this->max_request && $this->max_request > 0 ){
+            Worker::stopAll();
+        }
+
+
     }
 
     public function  ServerJson($data){
