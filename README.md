@@ -82,8 +82,8 @@ $app->onAppStart = function($app) use($config){
     WebWorker\autoload_dir($app->autoload);     
 };
 
-//应用级中间件--对所有访问启用ip限制访问
-$app->AddFunc("/",function() {
+//应用级中间件--对/hello访问启用ip限制访问
+$app->AddFunc("/hello",function() {
     if ( $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) {
         $this->ServerHtml("禁止访问");
         return true;//返回ture,中断执行后面的路由或中间件，直接返回给浏览器
