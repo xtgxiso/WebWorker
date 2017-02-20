@@ -45,7 +45,7 @@ use Workerman\Protocols\Http;
 use WebWorker\Libs\Mredis;
 use WebWorker\Libs\Mdb;
 use WebWorker\Libs\Mmysqli;
-use webWorker\Libs\Maccess;
+use WebWorker\Libs\Maccess;
 
 require_once 'vendor/autoload.php';
 
