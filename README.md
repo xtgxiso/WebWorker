@@ -45,10 +45,26 @@ use Workerman\Protocols\Http;
 use WebWorker\Libs\Mredis;
 use WebWorker\Libs\Mdb;
 use WebWorker\Libs\Mmysqli;
+use webWorker\Libs\Maccess;
 
 require_once 'vendor/autoload.php';
 
 $app = new WebWorker\App("http://0.0.0.0:1215");
+
+$config = array();
+$config["redis"]["host"] = "127.0.0.1";
+$config["redis"]["port"] = 6379;
+$config["redis"]["password"] = "123456";
+$config["redis"]["db"] = 1;
+$config["db"]["host"] = "127.0.0.1";
+$config["db"]["user"] = "root";
+$config["db"]["password"] = "123456";
+$config["db"]["db"] = "test";
+$config["db"]["port"] = 3306;
+$config["db"]["charset"] = "utf8";
+$config["access"]["appid"] = "123456";
+$config["access"]["appsecret"] = "abcdef";
+
 
 $app->name = "demo";
 
@@ -72,6 +88,21 @@ $app->AddFunc("/",function() {
         $this->ServerHtml("禁止访问");
         return true;//返回ture,中断执行后面的路由或中间件，直接返回给浏览器
     }   
+});
+
+//应用级中间件--对所有以api前缀开头的启用签名验证
+$app->AddFunc("/api",function() use($config) {
+    $data = $_GET ? $_GET : $_POST;
+    if ( !Maccess::verify_sign($data,$config["access"]) ){
+        $this->ServerHtml("禁止访问");
+        return true;
+    }
+});
+
+
+//注册路由api/test
+$app->HandleFunc("/api/test",function() {
+    $this->ServerHtml("api test hello");
 });
 
 //注册路由hello
@@ -102,17 +133,6 @@ $app->HandleFunc("/input",function() {
      $this->ServerHtml($body);
 });
 
-$config = array();
-$config["redis"]["host"] = "127.0.0.1";
-$config["redis"]["port"] = 6379;
-$config["redis"]["password"] = "123456";
-$config["redis"]["db"] = 1;
-$config["db"]["host"] = "127.0.0.1";
-$config["db"]["user"] = "root";
-$config["db"]["password"] = "123456";
-$config["db"]["db"] = "test";
-$config["db"]["port"] = 3306;
-$config["db"]["charset"] = "utf8";
 
 //redis示例
 $app->HandleFunc("/redis",function() use($app,$config){

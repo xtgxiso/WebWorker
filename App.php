@@ -17,7 +17,7 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.2.7';
+    const VERSION = '0.2.8';
 
     private $conn = false;
     private $map = array();
