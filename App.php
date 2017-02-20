@@ -175,7 +175,7 @@ EOD;
 	// 已经处理请求数
     	static $request_count = 0;
 	// 如果请求数达到1000
-        if( ++$request >= $this->max_request && $this->max_request > 0 ){
+        if( ++$request_count >= $this->max_request && $this->max_request > 0 ){
             Worker::stopAll();
         }
 
