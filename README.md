@@ -152,6 +152,8 @@ $app->on404  = function() {
     $this->ServerHtml("我的404");
 };
 
+//访问日志
+Worker::$stdoutFile = './stdout.log';
 
 // Run worker
 Worker::runAll();
