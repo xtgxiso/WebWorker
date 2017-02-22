@@ -7,7 +7,14 @@ use Workerman\Lib\Timer;
 use Workerman\Autoloader;
 use Workerman\Connection\AsyncTcpConnection;
 use Workerman\Protocols\Http;
+use Workerman\Protocols\HttpCache;
 use WebWorker\Libs\StatisticClient;
+
+function microtime_float()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}
 
 class App extends Worker
 {
@@ -21,6 +28,7 @@ class App extends Worker
 
     private $conn = false;
     private $map = array();
+    private $access_log = array();
 
     public  $autoload = array();
     public  $on404 ="";
@@ -95,9 +103,19 @@ class App extends Worker
                 $conn->close();
             }
         }
+	$this->access_log[7] = round(microtime_float() - $this->access_log[7],4);
+	echo implode(" - ",$this->access_log)."\n";
     }
 
     public function onClientMessage($connection,$data){
+	$this->access_log[0] = $_SERVER["REMOTE_ADDR"];
+	$this->access_log[1] = date("Y-m-d H:i:s");
+	$this->access_log[2] = $_SERVER['REQUEST_METHOD'];
+	$this->access_log[3] = $_SERVER['REQUEST_URI'];
+	$this->access_log[4] = $_SERVER['SERVER_PROTOCOL'];
+	$this->access_log[5] = "NULL";
+	$this->access_log[6] = 200;
+	$this->access_log[7] = microtime_float();
         if ( empty($this->map) ){
             $str = <<<'EOD'
 <div style="margin: 200px auto;width:600px;height:800px;text-align:left;">基于<a href="http://www.workerman.net/" target="_blank">Workerman</a>实现的自带http server的web开发框架.没有添加路由，请添加路由!
@@ -133,6 +151,7 @@ EOD;
 	    if ( $route[2] == 1){//正常路由
 		if ( $route[0] == $url ){
 		    $callback[] = $route[1];
+		    $success = true;
 		}
 	    }else if ( $route[2] == 2 ){//中间件
 		if ( $route[0] == "/" ){
@@ -142,7 +161,7 @@ EOD;
 		}
             }
 	}
-        if ( isset($callback) ){
+        if ( isset($callback) && $success ){
             try {
                 foreach($callback as $cl){
                     if ( call_user_func($cl) === true){
@@ -155,12 +174,13 @@ EOD;
             }catch (\Exception $e) {
                 // Jump_exit?
                 if ($e->getMessage() != 'jump_exit') {
-                    echo $e;
+                    $this->access_log[5] = $e;
                 }
                 $code = $e->getCode() ? $e->getCode() : 500;
 		if ( $this->statistic_server ){
                     StatisticClient::report($class, $method, $success, $code, $e, $statistic_address);
 		}
+		$this->access_log[6] = 500;
             }
         }else{
             $this->show_404($connection);
