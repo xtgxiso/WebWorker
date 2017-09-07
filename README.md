@@ -152,6 +152,17 @@ $app->on404  = function() {
     $this->ServerHtml("我的404");
 };
 
+//测试类
+class xtgxiso{
+    static function test()
+    {
+        global $app;
+        $app->ServerHtml("xtgxiso");
+    }
+}
+//注册类
+$app->HandleFunc("/xtgxiso",array("xtgxiso","test"));
+
 //访问日志
 Worker::$stdoutFile = './stdout.log';
 
