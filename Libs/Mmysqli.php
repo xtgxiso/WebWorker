@@ -21,16 +21,23 @@ class Mmysqli extends \mysqli{
         $db = isset($this->config["db"]) ? $this->config["db"] : "test";
         $port = isset($this->config["port"]) ? $this->config["port"] : 3306;
         $charset = isset($this->config["charset"]) ? $this->config["charset"] : "utf8";
-        parent::__construct($host,$user,$password,$db,$port);
-        if ( $this->connect_error )  {
-            echo ("connect error " . $this->connect_errno ."\r\n");
-            return false;
-        }
-        if ( !$this->set_charset($charset) ) {
-            echo ("Error loading character set $charset".$this->error."\r\n");
-            return false;
+        try {
+            parent::__construct($host,$user,$password,$db,$port);
+            if ( $this->connect_error )  {
+                echo ("connect error " . $this->connect_errno ."\r\n");
+                return false;
+            }
+            if ( !$this->set_charset($charset) ) {
+                echo ("Error loading character set $charset".$this->error."\r\n");
+                return false;
+            }
+        }catch (\Exception $e) {
+            echo ($e);
+        } catch (\Error $e) {
+            echo ($e);
         }
         return true;
+        
     }
 
     public function reconnect(){
