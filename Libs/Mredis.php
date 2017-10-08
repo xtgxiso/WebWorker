@@ -17,14 +17,20 @@ class Mredis extends \Redis{
             self::$_instance[$key] = new self();
             $host = isset($config["host"]) ? $config["host"] : "127.0.0.1";
             $port = isset($config["port"]) ? $config["port"] : 6379;
-            self::$_instance[$key]->connect($host,$port);
-            $password = isset($config["password"]) ? $config["password"] : "";
-            if ( $password ){
-                self::$_instance[$key]->auth($password);
-            }
-            $db = isset($config["db"]) ? $config["db"] : 0;
-            if ( !self::$_instance[$key]->select($db) ){
-                echo "redis can't connect\r\n";
+            try {
+                self::$_instance[$key]->connect($host,$port);
+                $password = isset($config["password"]) ? $config["password"] : "";
+                if ( $password ){
+                    self::$_instance[$key]->auth($password);
+                }
+                $db = isset($config["db"]) ? $config["db"] : 0;
+                if ( !self::$_instance[$key]->select($db) ){
+                    echo "redis can't connect\r\n";
+                }
+            }catch (\Exception $e) {
+                echo $e;
+            } catch (\Error $e) {
+                echo $e;
             }
         }
         return self::$_instance[$key];
