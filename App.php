@@ -202,10 +202,25 @@ EOD;
 
     }
 
-    public function  ServerJson($data){
+
+
+//    public function  ServerJson($data){
+//        Http::header("Content-type: application/json");
+//        $this->conn->send(json_encode($data));
+//    }
+
+
+    public function  ServerJson($data,$option=JSON_UNESCAPED_UNICODE){
         Http::header("Content-type: application/json");
+        if ($option) {
+//            json_encode的JSON_UNESCAPED_UNICODE参数 PHP版本必须是5.4以上
+            if (version_compare(PHP_VERSION,'5.4.0','>=')) {
+                $this->conn->send(json_encode($data,$option));
+            }
+        }
         $this->conn->send(json_encode($data));
     }
+
 
     public function  ServerHtml($data){
         $this->conn->send($data);
