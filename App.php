@@ -204,12 +204,7 @@ EOD;
 
 
 
-//    public function  ServerJson($data){
-//        Http::header("Content-type: application/json");
-//        $this->conn->send(json_encode($data));
-//    }
-
-
+    // 添加默认参数 json_encode的JSON_UNESCAPED_UNICODE参数 使之支持中文 不转义
     public function  ServerJson($data,$option=JSON_UNESCAPED_UNICODE){
         Http::header("Content-type: application/json");
         if ($option) {
