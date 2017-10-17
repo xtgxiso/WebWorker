@@ -209,30 +209,27 @@ EOD;
         Http::header("Content-type: application/json");
         //传入0 不做处理
         if ($option==0){
-            $this->conn->send(json_encode($data));
+          return $this->conn->send(json_encode($data));
         }else{
 
             if ($option==JSON_UNESCAPED_UNICODE) {
 //            json_encode的JSON_UNESCAPED_UNICODE参数 PHP版本必须是5.4以上
                 if (version_compare(PHP_VERSION,'5.4.0','>=')) {
-                    $this->conn->send(json_encode($data,$option));
+                    return $this->conn->send(json_encode($data,$option));
                 }else{
 //                 PHP版本小于5.3的支持  未经测试
-
 //                实现方法一 如下  实现方法二 可以使用urldecode函数
 //                $str = json_encode($data);
 //                $str = preg_replace_callback("#\\\u([0-9a-f]{4})#i",function($matchs){
 //                     iconv('UCS-2BE', 'UTF-8', pack('H4', $matchs[1]));
 //                },$str);
-//                $this->conn->send($str);
-                    $this->conn->send(json_encode($data));
+//               return $this->conn->send($str);
+                     return  $this->conn->send(json_encode($data));
                 }
             }
 
 //        如果传入了别的参数
-            $this->conn->send(json_encode($data),$option);
-
-
+            return $this->conn->send(json_encode($data),$option);
         }
     }
 
