@@ -147,7 +147,7 @@ $app->HandleFunc("/redis",function() use($app,$config){
 //mysql示例
 $app->HandleFunc("/mysql",function() use($app,$config){
      $db = Mdb::getInstance($config["db"]);
-     $list = $db->query("select * from test")->fetch_all(MYSQLI_ASSOC);
+     $list = $db->query("select * from test")->result_array();
      $app->ServerJson($list);
 });
 
