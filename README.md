@@ -170,7 +170,7 @@ $app->HandleFunc("/mysql",function() use($app,$config){
      //删除表test中的id=2的数据
      $result['data10'] = $this->db->delete("test",array("id"=>2));
      $this->ServerJson($result);
-     $app->ServerJson($list);
+    
 });
 
 //自定义404
