@@ -55,7 +55,7 @@ class Mmysqli extends \mysqli{
             if ( in_array($e->getCode(),array(2006,2014))) {
                 $this->close();
                 $this->connect_db();
-                return $this->query($query,$param);
+                return new Mmysqli_stmt($this, $query,$param);
             }
         }
         return false;
