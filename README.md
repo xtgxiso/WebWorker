@@ -146,7 +146,7 @@ $app->HandleFunc("/redis",function() use($app,$config){
 
 //mysql示例
 $app->HandleFunc("/mysql",function() use($app,$config){
-     $db = Mdb::getInstance($config["db"]);
+     $this->db = Mdb::getInstance($config["db"]);
      $result = array();
      $sql = "select * from test limit 1";
      //取一行对象结果集
