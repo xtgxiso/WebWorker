@@ -97,7 +97,6 @@ class Mmysqli extends \mysqli{
         if (strlen($limit) && strlen($start) ){
             $sql .= " limit $start,$limit";
         }
-        echo $sql."<br/>";
         return $this->query($sql);
     }
 
