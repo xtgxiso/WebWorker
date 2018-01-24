@@ -24,9 +24,10 @@ class App extends Worker
      *
      * @var string
      */
-    const VERSION = '0.3.0';
+    const VERSION = '0.3.7';
 
     private $conn = false;
+    private $conn_close = true;	
     private $map = array();
     private $access_log = array();
 
@@ -93,14 +94,18 @@ class App extends Worker
         if ( strtolower($_SERVER["SERVER_PROTOCOL"]) == "http/1.1" ){
             if ( isset($_SERVER["HTTP_CONNECTION"]) ){
                 if ( strtolower($_SERVER["HTTP_CONNECTION"]) == "close" ){
-                        $conn->close();
+			if ( $this->conn_close ){
+                            $conn->close();
+			}	
                 }
             }
         }else{
             if ( $_SERVER["HTTP_CONNECTION"] == "keep-alive" ){
 
             }else{
-                $conn->close();
+		if ( $this->conn_close ){    
+                	$conn->close();
+		}
             }
         }
 	$this->access_log[7] = round(microtime_float() - $this->access_log[7],4);
