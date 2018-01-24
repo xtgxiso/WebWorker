@@ -18,6 +18,7 @@ WebWorker
 * 支持http协议1.1和1.0的长连接和短连接
 * 集成了workerman-statistics项目，可以监控服务情况
 * 支持中间件
+* 支持一次性订阅和发布
 
 框架由来
 ========
@@ -54,6 +55,7 @@ use WebWorker\Libs\Maccess;
 require_once 'vendor/autoload.php';
 
 $app = new WebWorker\App("http://0.0.0.0:1215");
+$app->count = 1;
 
 $config = array();
 $config["redis"]["host"] = "127.0.0.1";
@@ -188,6 +190,24 @@ class xtgxiso{
 }
 //注册类
 $app->HandleFunc("/xtgxiso",array("xtgxiso","test"));
+
+//订阅，不考虑分布式，分布式的话连接不能存储在内存中
+$app->HandleFunc("/subscription",function() {
+    $id = $_GET["id"];
+    $this->conn_list[$id] =  $this->conn;
+    $this->conn_close = false;//通过设置属性控制连接不关闭
+});
+
+//发布，不考虑分布式，分布式的话连接不能存储在内存中
+$app->HandleFunc("/publish",function() {
+    $id = $_GET["id"];
+    $conn = $this->conn_list[$id];
+    if ( $conn ){
+        $str = $_GET["content"];
+        $conn->send($str);
+    }
+    $this->ServerHtml("");
+});
 
 //访问日志
 Worker::$stdoutFile = './stdout.log';
